@@ -19,7 +19,7 @@ using Serilog;
 
 namespace OpenUtau.App.ViewModels {
     public class SingersViewModel : ViewModelBase {
-        public IEnumerable<USinger> Singers => SingerManager.Inst.SingerGroups.Values.SelectMany(l => l);
+        [Reactive] public IEnumerable<USinger> Singers { get; set; } = SingerManager.Inst.SingerGroups.Values.SelectMany(l => l);
         [Reactive] public USinger? Singer { get; set; }
         [Reactive] public Bitmap? Avatar { get; set; }
         [Reactive] public string? Info { get; set; }
@@ -35,6 +35,7 @@ namespace OpenUtau.App.ViewModels {
         public List<MenuItemViewModel> SetEncodingMenuItems => setEncodingMenuItems;
         public List<MenuItemViewModel> SetDefaultPhonemizerMenuItems => setDefaultPhonemizerMenuItems;
 
+        [Reactive] public string SearchSinger { get; set; } = "";
         [Reactive] public string SearchAlias { get; set; } = "";
 
         private readonly ObservableCollectionExtended<USubbank> subbanks
@@ -224,6 +225,16 @@ namespace OpenUtau.App.ViewModels {
             try {
                 if (Singer != null) {
                     OS.OpenFolder(Singer.Location);
+                }
+            } catch (Exception e) {
+                DocManager.Inst.ExecuteCmd(new ErrorMessageNotification(e));
+            }
+        }
+
+        public void OpenSingersLocation() {
+            try {
+                if (Singer != null) {
+                    OS.OpenFolder(PathManager.Inst.SingersPath);
                 }
             } catch (Exception e) {
                 DocManager.Inst.ExecuteCmd(new ErrorMessageNotification(e));

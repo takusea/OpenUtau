@@ -54,6 +54,32 @@ namespace OpenUtau.App.Views {
             }
         }
 
+        async void OnInstallSingerButton(object sender, RoutedEventArgs args) {
+            var viewModel = (DataContext as SingersViewModel)!;
+            var file = await FilePicker.OpenFile(
+                this, "singers.list.install", FilePicker.ArchiveFiles);
+            if (file == null) {
+                return;
+            }
+            if (file.EndsWith(Core.Vogen.VogenSingerInstaller.FileExt)) {
+                Core.Vogen.VogenSingerInstaller.Install(file);
+                return;
+            }
+            try {
+                var setup = new SingerSetupDialog() {
+                    DataContext = new SingerSetupViewModel() {
+                        ArchiveFilePath = file,
+                    },
+                };
+                await setup.ShowDialog(this);
+                if (setup.Position.Y < 0) {
+                    setup.Position = setup.Position.WithY(0);
+                }
+            } catch (Exception e) {
+                _ = MessageBox.ShowError(this, e);
+            }
+        }
+
         async void OnSetImage(object sender, RoutedEventArgs args) {
             var viewModel = (DataContext as SingersViewModel)!;
             if (viewModel.Singer == null) {
@@ -78,6 +104,16 @@ namespace OpenUtau.App.Views {
                 Log.Error(e, "Failed to set image");
                 _ = await MessageBox.ShowError(this, e);
             }
+        }
+
+        void SearchTextBoxChanged(object sender, TextChangedEventArgs args) {
+            var viewModel = (DataContext as SingersViewModel)!;
+            viewModel.Singers = SingerManager.Inst.SingerGroups.Values.SelectMany(l => l).Where(Singer => Singer.Name.Contains(viewModel.SearchSinger));
+        }
+
+        void SingersSelectionChanged(object sender, SelectionChangedEventArgs args) {
+            var viewModel = (DataContext as SingersViewModel)!;
+            viewModel.Singer = viewModel.Singers.ElementAt(SingerListBox.SelectedIndex);
         }
 
         async void OnSetPortrait(object sender, RoutedEventArgs args) {

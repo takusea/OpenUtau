@@ -346,6 +346,9 @@
   <system:String x:Key="progress.waitingrendering">Waiting Rendering</system:String>
 
   <system:String x:Key="singers.caption">Singers</system:String>
+  <system:String x:Key="singers.list.search">Search Singer</system:String>
+  <system:String x:Key="singers.list.install">Install Singer</system:String>
+  <system:String x:Key="singers.list.location">Open Folder</system:String>
   <system:String x:Key="singers.editoto.editinvlabeler">Edit In vLabeler</system:String>
   <system:String x:Key="singers.editoto.gotosource">Goto Source File</system:String>
   <system:String x:Key="singers.editoto.regenfrq">Regenerate FRQ</system:String>
