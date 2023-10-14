@@ -28,6 +28,7 @@
       <ResourceInclude x:Key="themes-dark" Source="/Colors/DarkTheme.axaml"/>
       <ResourceInclude x:Key="themes-light" Source="/Colors/LightTheme.axaml"/>
       <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="/Icons/Icons.axaml"/>
         <ResourceInclude Source="/Colors/Brushes.axaml"/>
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
